@@ -1,8 +1,7 @@
 <?php 
 
 include "db.php";
-$q="SELECT users.name,users.surname,readings.time, readings.action from users, readings, cards where users.id=cards.userId AND cards.tagId=readings.tagId
-group BY users.name,readings.action";
+$q="SELECT users.name,users.surname,users.id,total_hours.date,total_hours.hours from users, total_hours, cards where users.id=cards.userId AND cards.tagId=total_hours.tagId";
 $res=mysql_query($q);
 
 ?>
@@ -83,9 +82,11 @@ $res=mysql_query($q);
                      <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Date and Time</th>
-                        <th>Action</th>
-                       
+                        <th>Staff ID</th>
+                        <th>Date</th>
+			
+                        <th>No of Hours</th>
+                        
                       </tr>
                     </thead>
                    
@@ -97,8 +98,9 @@ $res=mysql_query($q);
 					{?>
                       <tr>
                         <td><?php echo $info['name']." ".$info[surname]?></td>
-			<td><?php echo $info['time']?></td>
-			<td><?php echo $info['action']?></td>
+			<td><?php echo $info['id']?></td>
+			<td><?php echo $info['date']?></td>
+			<td><?php echo $info['hours']?></td>
                        
                       </tr>
 					<?php } ?>                    </tfoot>

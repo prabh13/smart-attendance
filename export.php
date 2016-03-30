@@ -3,33 +3,37 @@ ob_start();
 include "db.php";
 $header = '';
 $data = '';
-$company_name = $_GET['company'];
+#$company_name = $_GET['company'];
 
     {
         $header .= 'Sr No'."\t";
-        $header .= 'TAGID'."\t";
-        $header .= 'AMOUNT'."\t";
-        $header .= 'TIME'."\t";
+        $header .= 'NAME'."\t";
+        $header .= 'STAFF ID'."\t";
+        $header .= 'DATE'."\t";
+	$header .= 'NO OF HOURS'."\t";
        
     }
 
-$query="select * from readings where amtpay!=0";
+$query="SELECT users.name,users.surname,users.id,total_hours.date,total_hours.hours from users, total_hours, cards where users.id=cards.userId AND cards.tagId=total_hours.tagId";
 $result = mysql_query($query);
 $serial = 0;
 while($info = mysql_fetch_array($result))
 {
 $serial++;
 
-$time =$info['time'];
-$tagid=$info['tagId'];
-$amt=$info['amtpay'];
+$name=$info['name']." ".$info[surname];
+$id=$info['id'];
+$date=$info['date'];
+$hours=$info['hours'];
+
 
 
 
 $data .= ''.$serial."\t";
-$data .= ''.$tagid."\t";
-$data .= ''.$amt."\t";
-$data .= ''.$time."\t";
+$data .= ''.$name."\t";
+$data .= ''.$id."\t";
+$data .= ''.$date."\t";
+$data .= ''.$hours."\t";
 
 $data .= "\n";
 }

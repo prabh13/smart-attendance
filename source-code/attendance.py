@@ -66,6 +66,7 @@ def readNfc(action):
         name = mysql.insertReading(cardId,Actions.outcomming)
         print name
         display.lcdWriteSecondLine(name)
+        mysql.hoursworked(cardId)
     if(action==49):#1 - break start
         onScreen("Break Start..")
         display.lcdWriteFirstLine("Break Start..")

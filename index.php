@@ -4,7 +4,7 @@ if(isset($_REQUEST['signin']))
 {
 $name=$_REQUEST['username'];
 $pass=$_REQUEST['pass'];
-//username = admin , password =admin
+
 if($name=='admin' && $pass=='admin'){
 echo "<script> alert('Logged in successfully!! ')</script>";
 	echo "<script> window.location.href='data.php'</script>";
@@ -12,8 +12,6 @@ echo "<script> alert('Logged in successfully!! ')</script>";
 else
 echo "<script> alert('Wrong credentials entered !! ')</script>";
 }
-
-
 ?> 
 
 

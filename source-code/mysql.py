@@ -11,9 +11,11 @@ def connect():
 def insertReading(tagId,action):
     db = connect()
     cur = db.cursor()
-    currentTime=strftime("%Y%m%d%H%M%S", localtime())
-    cur.execute("""INSERT INTO readings (tagId, time, action) VALUES (%s, %s, %s)""",(tagId,currentTime,action))
+    currentDate=strftime("%Y%m%d", localtime())
+    currentTime=strftime("%H%M%S", localtime())
+    cur.execute("""INSERT INTO readings (tagId, date, time, action) VALUES (%s, %s, %s, %s)""",(tagId,currentDate,currentTime,action))
     db.commit()
+    
     cur.execute("SELECT name,surname FROM users WHERE id = (SELECT userId FROM cards WHERE tagId=%s LIMIT 1)",(tagId))
     row = cur.fetchone();
     db.close()
@@ -32,6 +34,31 @@ def getLastReading(tagId):
     row = cur.fetchone()
     db.close()
     return row
+
+def hoursworked(tagId):
+    currentDate=strftime("%Y%m%d", localtime())
+    checkTime = datetime.datetime.now() - datetime.timedelta(minutes=5)
+    db = connect()
+    cur = db.cursor()
+    
+    cur.execute("SELECT time from readings where date=%s AND action=1 AND tagId=tagId",(currentDate))
+    row=cur.fetchone()
+    t1=row[0]
+    cur.execute("SELECT time from readings where date=%s AND action=2 AND tagId=tagId",(currentDate))
+    row=cur.fetchone()
+    t2=row[0]
+    cur.execute("SELECT time from readings where date=%s AND action=3 AND tagId=tagId",(currentDate))
+    row=cur.fetchone()
+    t3=row[0]
+    cur.execute("SELECT time from readings where date=%s AND action=4 AND tagId=tagId",(currentDate))
+    row=cur.fetchone()
+    t4=row[0]
+    hours=t2-t1+t3-t4
+    cur.execute("""INSERT INTO total_hours (tagId, date, hours) VALUES (%s, %s, %s)""",(tagId,currentDate,hours))
+    db.commit()
+    db.close()
+
+
 
 def deleteLastReading(tagId):
     '''Deletes last reading inserted max 5(+1) minutes ago'''
